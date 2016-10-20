@@ -1,15 +1,15 @@
-CFLAGS:=$(shell root-config --cflags)
-LIBS:=$(shell root-config --libs)
+CFLAGS:=$(shell root-config --cflags) -g
+LIBS:=$(shell root-config --libs) -g
 
 #GeRebin: UniformDithering.o EqualBinning.o GeSpcAnalysisManager.o GeRebin.o
-GeRebin: GeSpcAnalysisManager.o GeRebin.o
+GeRebin: GeSpcAnalysisManager.o GeRebin.o Spectrum.o
 	g++ -o $@ $(LIBS) $^
 
 GeSpcAnalysisManager.o: GeSpcAnalysisManager.cc GeSpcAnalysisManager.hh
 	g++ -c $(CFLAGS) $<
 #
-#Spectrum.o: Spectrum.cc Spectrum.h
-#	g++ -c $(CFLAGS) $<
+Spectrum.o: Spectrum.cc Spectrum.h
+	g++ -c $(CFLAGS) $<
 #
 GeRebin.o: GeRebin.cc GeSpcAnalysisManager.hh
 	g++ -c $(CFLAGS) $<
