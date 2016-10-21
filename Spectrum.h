@@ -14,8 +14,8 @@ class Spectrum {
 		void SetSpectrum(vector<unsigned int> raw_spc);
 		void SetCalibration(vector<double> res_par);
 		void Convert(string conversion_method);
-		void WriteROOT(const char *out_f);
-		void Write(const char *out_f);
+		void WriteROOT(const string out_f);
+		void Write(const string out_f);
 		void Show() const;
 	private:
 		void CheckData();

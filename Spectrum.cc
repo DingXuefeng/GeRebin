@@ -8,8 +8,6 @@ using std::endl;
 #include <fstream>
 using std::ifstream;
 using std::ofstream;
-#include <sstream>
-using std::stringstream;
 
 double Spectrum::keV = 1;
 double Spectrum::MeV = 1e3;
@@ -84,22 +82,22 @@ void Spectrum::Convert(string conversion_method="ConvertToOutN") {
 //
 //
 //
-void Spectrum::Write(const char *out_f) {
+void Spectrum::Write(const string out_f) {
 	CheckData();
 	ofstream out;
 	out.open(out_f);
-	out<<"ADC to E Model: "<<ADC_to_E->GetExpFormula()<<", ";
-	for(int i = 0;i<ADC_to_E->GetNpar();++i)
-		out<<ADC_to_E->GetParameter(i)<<", ";
-	out<<endl;
+//	out<<"ADC to E Model: "<<ADC_to_E->GetExpFormula()<<", ";
+//	for(int i = 0;i<ADC_to_E->GetNpar();++i)
+//		out<<ADC_to_E->GetParameter(i)<<", ";
+//	out<<endl;
 	// data
 	for(int i = 1;i<=out_Npdf->GetNbinsX();++i)
 		out<<out_Npdf->GetBinContent(i)<<" "<<out_Npdf->GetBinError(i)<<endl;
 	out.close();
 }
 #include "TFile.h"
-void Spectrum::WriteROOT(const char *out_f) {
-	TFile *f = TFile::Open(out_f,"RECREATE");
+void Spectrum::WriteROOT(const string out_f) {
+	TFile *f = TFile::Open(out_f.c_str(),"RECREATE");
 	in_N->Write();
 	in_Npdf->Write();
 	out_N->Write();

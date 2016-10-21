@@ -22,8 +22,8 @@ int main(const int argc,const char *argv[]) {
 	 spc->SetCalibration(GeSpcAnalysisManager::GetInstance()->GetCalibration());
 	 spc->Convert("ConvertToOutN");
 	 spc->Show();
-	 spc->Write("output.dat");
-	 spc->WriteROOT("output.root");
+	 spc->Write(GeSpcAnalysisManager::GetInstance()->GetOutputName());
+	 spc->WriteROOT(GeSpcAnalysisManager::GetInstance()->GetOutputROOTName());
 
 	 return 0;
 }

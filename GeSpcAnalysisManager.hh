@@ -25,12 +25,16 @@ namespace GeSpcAnalysis {
 				bool LoadRawSpectrum();
 				vector<unsigned int> &GetSpectrum() { return m_raw_spc; };
 				vector<double> &GetCalibration() { return m_res_par; };
+				string &GetOutputName() { return m_output_f; };
+				string GetOutputROOTName() { return m_output_f+".root";};
 
 		  private:
 				bool FindFlag(istream &in,const string &flag);
 				bool ParseRawDataFile(string raw_fname, vector<unsigned int> &raw_spc,vector<double> &res_par);
 		  private:
-				std::string m_input_f;
+				string m_input_f;
+				string m_output_f;
+				
 		  private:
 				vector<unsigned int> m_raw_spc;
 				vector<double> m_res_par;

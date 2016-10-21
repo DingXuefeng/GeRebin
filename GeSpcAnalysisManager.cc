@@ -1,9 +1,7 @@
 #include <iostream>
 
 #include "GeSpcAnalysisManager.hh"
-#include "EqualBinning.hh"
-#include "UniformDithering.hh"
-
+#include "GeSpcAnalysisManager.hh"
 using GeSpcAnalysis::GeSpcAnalysisManager;
 using std::cout;
 using std::endl;
@@ -21,11 +19,12 @@ GeSpcAnalysisManager *GeSpcAnalysisManager::GetInstance() {
 #include <exception>
 using std::runtime_error;
 bool GeSpcAnalysisManager::ReadOptions(const int argc, const char *argv[]) {
-	if(argc==2) {
+	if(argc==3) {
 		m_input_f = argv[1];
+		m_output_f = argv[2];
 	} else {
 		cout<<"Program for rebinning of Germanium detector spectrum"<<endl;
-		cout<<"Usage: ./process <inputfilename> [outputfilename] [bin.cfg]"<<endl;
+		cout<<"Usage: ./process <inputfilename> <outputfilename>"<<endl;
 		cout<<"If the output file not specified, it will be <inputfilename>_rebin_[bin_n]_[start_bin]_[end_bin].dat"<<endl;
 		cout<<"If the config file not specified, the output histogram will be from 0.5 keV to 3000.5 keV, and 1 keV per bin."<<endl;
 		cout<<"Check the example configfile for all configs."<<endl;
@@ -138,3 +137,8 @@ bool GeSpcAnalysisManager::ParseRawDataFile(string raw_fname, vector<unsigned in
 		return true;
 	}
 }
+//string GeSpcAnalysisManager::GetOutputROOTName() {
+//	stringstream outputRootName;
+//	outputRootName<<m_output_f<<".root";
+//	return outputRootName.str();
+//}
