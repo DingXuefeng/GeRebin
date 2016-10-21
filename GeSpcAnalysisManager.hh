@@ -2,7 +2,10 @@
 #define GeSpcAnalysisManager_H
 #include <string>
 #include <vector>
+#include <iostream>
 using std::vector;
+using std::string;
+using std::istream;
 namespace GeSpcAnalysis {
 	 class IDithering;
 	 class IBinning;
@@ -19,29 +22,22 @@ namespace GeSpcAnalysis {
 
 		  public:
 				bool ReadOptions(const int argc, const char *argv[]);
-				bool Fill();
-				bool Save();
+				bool LoadRawSpectrum();
+				vector<unsigned int> &GetSpectrum() { return m_raw_spc; };
+				vector<double> &GetCalibration() { return m_res_par; };
+				string &GetOutputName() { return m_output_f; };
+				string GetOutputROOTName() { return m_output_f+".root";};
 
 		  private:
-				bool ParseOptions();
-				bool MakePdf();
+				bool FindFlag(istream &in,const string &flag);
+				bool ParseRawDataFile(string raw_fname, vector<unsigned int> &raw_spc,vector<double> &res_par);
 		  private:
-				std::string m_input_f;
-				std::string m_output_f;
-				std::string m_config_f;
-				std::string m_outputName;
-				IDithering *m_dithering_generator;
-				IBinning *m_binning_manager;
-//				IMask *m_mask_manager;
-//				ISave *m_save_manager;
-				bool m_mask_corr;
-				bool m_dithering;
+				string m_input_f;
+				string m_output_f;
+				
 		  private:
-//				IPdf *m_pdf;
-				int m_Nbins;
-				vector<double> m_binEdge;
-				vector<double> m_binContent;
-				vector<double> m_binError; // error of content
+				vector<unsigned int> m_raw_spc;
+				vector<double> m_res_par;
 	 };
 };
 #endif

@@ -1,4 +1,4 @@
-#define bg
+//#define bg
 void compare() {
   TH1F *bg_new = new TH1F("bg_new","new histogram",3000,0.5,3000.5);
   ifstream f_new;
@@ -8,8 +8,6 @@ void compare() {
   f_new.open("v50_1keV.dat");
 #endif
   char buff[255];
-  f_new>>buff>>buff>>buff>>buff;
-  cout<<buff<<endl;
   for(int i =1;i<=3000;++i) {
     double y,yerr;
     f_new>>y>>yerr;
@@ -21,9 +19,9 @@ void compare() {
   TH1F *bg_old = new TH1F("bg_old","old histogram",3000,1,3001);
   ifstream f_old;
 #ifdef bg
-  f_old.open("../../data/20150202/bg_1kev.dat");
+  f_old.open("../data/20150202/bg_1kev.dat");
 #else
-  f_old.open("../../data/20150202/v_1kev_8k.dat");
+  f_old.open("../data/20150202/v_1kev_8k.dat");
 #endif
   for(int i =1;i<=3000;++i) {
     double y;
