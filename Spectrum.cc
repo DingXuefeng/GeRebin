@@ -1,5 +1,4 @@
 #include "Spectrum.h"
-//#include "TH1D.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -87,8 +86,6 @@ double Spectrum::Histogram::GetRandom() const {
 Spectrum::Spectrum(double out_bin_width) :
 	res_par_ready(false), 
 	ADC_spc_ready(false),E_spc_ready(true),
-	in_N(NULL), in_Npdf(NULL),
-	out_N(NULL), out_Npdf(NULL),
 	ADC(NULL),
 	E(new Histogram(10*MeV/out_bin_width,0.5*out_bin_width,10*MeV+0.5*out_bin_width))
 {
@@ -96,15 +93,6 @@ Spectrum::Spectrum(double out_bin_width) :
 		throw runtime_error("out bin width should be divider of 10*MeV");
 	}
 	E_spc_ready = true;
-		/*
-		if(out_N) delete out_N;
-		int Nbins = 10000; // 10 MeV
-		out_N = new TH1D("out_N","histogram of output (entries)",Nbins,
-				out_bin_width/2,(Nbins+0.5)*out_bin_width);
-		if(out_Npdf) delete out_Npdf;
-		out_Npdf = new TH1D("out_Npdf","histogram of output (entries/binWidth)",Nbins,
-				out_bin_width/2,(Nbins+0.5)*out_bin_width);
-				*/
 }
 
 Spectrum::~Spectrum() {
@@ -138,14 +126,6 @@ void Spectrum::ConvertToOutN() {
 	throw runtime_error("This method is not implemented yet.");
 	for(int i = 0;i<m_E_spc.size();++i) {
 	}
-//	for(int i = 1;i<=out_N->GetNbinsX();++i) {
-//		double y,y_err;
-//		Integrate(y,y_err,in_Npdf,
-//				out_N->GetBinLowEdge(i),
-//				out_N->GetBinLowEdge(i)+out_N->GetBinWidth(i));
-//		out_N->SetBinContent(i,y);
-//		out_N->SetBinError(i,y_err);
-//	}
 }
 void Spectrum::FillOutN() {
 	for(int i = 0;i<ADC->Integral();++i) {

@@ -1,6 +1,4 @@
 #ifndef Spectrum_H
-class TH1I;
-class TH1D;
 #include <vector>
 using std::vector;
 #include <string>
@@ -21,8 +19,6 @@ class Spectrum {
 	private:
 		void ConvertToOutN();
 		void FillOutN();
-//		void Integrate(double &y,double &y_err,
-//				const TH1D* Npdf,const double x_l,const double x_r) const;
 		double ADC_to_E(double ADC);
 
 	private:
@@ -33,10 +29,6 @@ class Spectrum {
 		vector<unsigned int> m_ADC_spc;
 		vector<double> m_E_spc;
 		vector<double> m_E_spc_err;
-		TH1D* in_N;
-		TH1D* in_Npdf;
-		TH1D* out_N;
-		TH1D* out_Npdf;
 	public:
 		static double keV;
 		static double MeV;
