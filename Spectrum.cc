@@ -147,7 +147,7 @@ void Spectrum::Convert(string conversion_method="ConvertToOutN") {
 void Spectrum::Write(const string out_f) {
 	ofstream out;
 	out.open(out_f);
-	out<<"ADC to E Model: ["<<m_res_par.at(0)<<"]+["
+	cout<<"ADC to E Model: ["<<m_res_par.at(0)<<"]+["
 		<<m_res_par.at(1)<<"]*x+["
 		<<m_res_par.at(2)<<"]*x*x"<<endl;
 	// data
