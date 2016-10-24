@@ -18,6 +18,7 @@ int main(const int argc,const char *argv[]) {
 		  
 	 } catch (std::exception &ex) {
 		  std::cerr<<"Exception: "<<ex.what()<<std::endl;
+		  system("PAUSE");
 		  exit(1);
 	 }
 
@@ -29,14 +30,14 @@ int main(const int argc,const char *argv[]) {
 		 spc->SetCalibration(GeSpcAnalysisManager::GetInstance()->GetCalibration());
 		 // "ConvertToOutN" or "FillOutN"
 		 spc->Convert("FillOutN");
-		 spc->Show();
 		 spc->Write(GeSpcAnalysisManager::GetInstance()->GetOutputName());
 		 }
 	 } catch (std::exception &ex) {
 		 std::cerr<<"Exception: "<<ex.what()<<std::endl;
-		 std::cin.get();
+		 system("PAUSE");
 		 return -1;
 	 }
+	 system("PAUSE");
 
 	 return 0;
 }

@@ -155,6 +155,9 @@ void Spectrum::Convert(string conversion_method="ConvertToOutN") {
 void Spectrum::Write(const string out_f) {
 	ofstream out;
 	out.open(out_f.c_str());
+	cout<<"E spectrum written to ["<<out_f<<"] successfully."<<endl;
+	cout<<endl;
+	Show();
 	cout<<"ADC to E Model: ["<<m_res_par.at(0)<<"]+["
 		<<m_res_par.at(1)<<"]*x+["
 		<<m_res_par.at(2)<<"]*x*x"<<endl;
@@ -193,5 +196,4 @@ void Spectrum::Show() const {
 		cout<<"..."<<endl;
 	}
 }
-//
-#include <cmath>
+
