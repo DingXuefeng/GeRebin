@@ -148,7 +148,7 @@ bool GeSpcAnalysisManager::ParseRawDataFile(string raw_fname, vector<unsigned in
 	FindFlag(rawspc_f,"$MCA_CAL:");
 	int npar;
 	rawspc_f>>npar;
-	for(int i = 0;i<npar;++i) {
+	for(int j = 0;j<npar;++j) {
 		double par;
 		rawspc_f>>par;
 		res_par.push_back(par);
