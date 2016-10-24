@@ -2,3 +2,7 @@
 *.spe
 *.dat
 GeRebin
+Debug
+*.dsp
+*.dsw
+*.plg
