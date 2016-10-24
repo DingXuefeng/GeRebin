@@ -11,13 +11,18 @@
 #include <iostream>
 #include "GeSpcAnalysisManager.h"
 using GeSpcAnalysis::GeSpcAnalysisManager;
+#ifdef _WIN32
+#define __PAUSE__ system("PAUSE");
+#else
+#define __PAUSE__ ;
+#endif
 int main(const int argc,const char *argv[]) {
 
 	 try {
 		  GeSpcAnalysisManager::GetInstance()->ReadOptions(argc,argv);
 	 } catch (std::exception &ex) {
 		  std::cerr<<"Exception: "<<ex.what()<<std::endl;
-		  system("PAUSE");
+		  __PAUSE__;
 		  exit(1);
 	 }
 
@@ -33,10 +38,10 @@ int main(const int argc,const char *argv[]) {
 		 }
 	 } catch (std::exception &ex) {
 		 std::cerr<<"Exception: "<<ex.what()<<std::endl;
-		 system("PAUSE");
-		 return -1;
+		 __PAUSE__;
+		 exit(1);
 	 }
-	 system("PAUSE");
+	 __PAUSE__;
 
 	 return 0;
 }

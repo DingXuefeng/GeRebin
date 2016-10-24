@@ -1,4 +1,4 @@
 test1.spe
-test1_ref.dat
+test1.dat
 test2.spe
-test2_ref.dat
+test2.dat
