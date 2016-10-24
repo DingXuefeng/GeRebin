@@ -16,14 +16,19 @@ int main(const int argc,const char *argv[]) {
 		  exit(1);
 	 }
 
-	 Spectrum *spc = new Spectrum(1*Spectrum::keV);
+	 try {
+		 Spectrum *spc = new Spectrum(1*Spectrum::keV);
 
-	 spc->SetSpectrum(GeSpcAnalysisManager::GetInstance()->GetSpectrum());
-	 spc->SetCalibration(GeSpcAnalysisManager::GetInstance()->GetCalibration());
-	 spc->Convert("ConvertToOutN");
-	 spc->Show();
-	 spc->Write(GeSpcAnalysisManager::GetInstance()->GetOutputName());
-	 spc->WriteROOT(GeSpcAnalysisManager::GetInstance()->GetOutputROOTName());
+		 spc->SetSpectrum(GeSpcAnalysisManager::GetInstance()->GetSpectrum());
+		 spc->SetCalibration(GeSpcAnalysisManager::GetInstance()->GetCalibration());
+		 // "ConvertToOutN" or "FillOutN"
+		 spc->Convert("FillOutN");
+		 spc->Show();
+		 spc->Write(GeSpcAnalysisManager::GetInstance()->GetOutputName());
+	 } catch (std::exception &ex) {
+		 std::cerr<<"Exception: "<<ex.what()<<std::endl;
+		 exit(1);
+	 }
 
 	 return 0;
 }
