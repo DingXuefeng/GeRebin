@@ -107,7 +107,7 @@ bool GeSpcAnalysisManager::ParseRawDataFile(string raw_fname, vector<unsigned in
 			rawspc_f>>in_N_begin>>in_N_end;
 		}
 		// get the entries for each channel
-		for(int i = in_N_begin;i< in_N_end; ++i) {
+		for(int i = in_N_begin;i<= in_N_end; ++i) {
 			unsigned int n;
 			rawspc_f>>n;
 			raw_spc.push_back(n);
