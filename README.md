@@ -1,6 +1,14 @@
 # GeRebin
 rebinning program for HPGe aquired data.
 
-The input are txt files. they loaded into the memory by InputManager. In order to easily load data of different format, an interface is provided. I provide the implemntation for loading GeMPI data.
+put the input filenameon the first line of config.txt, and output filename on the second line.
 
-An interface for rebinning handler is provided to allow different strategies. The program provide four strategies: output the energies with equal width binning or non-equal width binning; output the ADC with equal width binning or non-equal width binning.
+the example format see config_ref.txt, test.spe and test_ref.dat
+
+if you want to process more than one file, put them consequently in config.txt. for example you can write in the config.txt:
+test1.spe
+test1.dat
+test2.spe
+test2.dat
+test3.spe
+test3.dat
