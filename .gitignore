@@ -4,5 +4,6 @@
 GeRebin
 Debug
 *.dsp
-*.dsw
 *.plg
+*.ncb
+*.opt
