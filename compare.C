@@ -31,12 +31,13 @@ void compare() {
   f_old.close();
 
   TH1F *bg_compare = new TH1F("bg_compare","compare histogram",3000,0,3000);
-  for(int i =2;i<=3000;++i) {
-    double y1 = bg_new->GetBinContent(i);
-    double y2 = bg_old->GetBinContent(i-1);
-    if(y1>0)
-      //bg_compare->SetBinContent(i,(y2-y1)/y1);
-      bg_compare->SetBinContent(i,y2-y1);
+  for(int i =1;i<=3000;++i) {
+	  double x = bg_compare->GetBinCenter(i);
+	  double y1 = bg_new->GetBinContent(bg_new->FindBin(x));
+	  double y2 = bg_old->GetBinContent(bg_old->FindBin(x));
+	  if(y1>0)
+		  //bg_compare->SetBinContent(i,(y2-y1)/y1);
+		  bg_compare->SetBinContent(i,y2-y1);
   }
 
   TCanvas* cc = new TCanvas("cc","cc",800,800);
@@ -51,10 +52,15 @@ void compare() {
   bg_new->GetXaxis()->SetTitle("Energy (keV)");
   bg_new->GetYaxis()->SetTitle("Entries/keV");
   bg_old->Draw("HISTsame");
+  TLegend *leg = new TLegend(0.6,0.6,0.9,0.9);
+  leg->AddEntry(bg_new,"NEW","l");
+  leg->AddEntry(bg_old,"OLD","l");
+  leg->Draw();
   pad2->cd();
   bg_compare->Draw("HIST");
   bg_compare->GetXaxis()->SetTitle("Energy (keV)");
-  bg_compare->GetYaxis()->SetTitle("Entries/keV");
+  bg_compare->GetYaxis()->SetTitle("old-new");
+  pad2->SetLogy(false);
   cc->Print("cc.pdf");
 }
 

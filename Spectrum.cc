@@ -17,8 +17,14 @@ Spectrum::Histogram::Histogram(const vector<unsigned int> &raw_spc) :
 	L(0),R(0),Nbins(0),dx(0),N(0),maximum(0),bin_ready(false)
 {
 	Nbins = raw_spc.size();
+#define START_FROM_0
+#ifndef START_FROM_0
 	L = -0.5;
 	R = Nbins-0.5;
+#else
+	L = 0;
+	R = Nbins;
+#endif
 	dx = 1;
 	maximum = 0;
 	biny = new vector<double>(Nbins+2,0); // underflow and overflow
@@ -150,6 +156,8 @@ void Spectrum::Write(const string out_f) {
 	cout<<"ADC to E Model: ["<<m_res_par.at(0)<<"]+["
 		<<m_res_par.at(1)<<"]*x+["
 		<<m_res_par.at(2)<<"]*x*x"<<endl;
+	cout<<"output: on [N] line is the entries in [-0.5keV+N*keV,+0.5keV+N*keV)"<<endl;
+	cout<<"eg: first line is the entries in [0.5keV, 1.5keV)"<<endl;
 	// data
 	for(int i = 1;i<=E->GetNbins();++i)
 		out<<E->GetBinContent(i)<<" "<<E->GetBinError(i)<<endl;
