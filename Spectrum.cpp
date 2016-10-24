@@ -117,7 +117,7 @@ void Spectrum::SetSpectrum(const vector<unsigned int> &raw_spc) {
 void Spectrum::SetCalibration(const vector<double> &res_par) {
 	if((res_par.size()!=2)&&(res_par.size()!=3)) {
 		// throw
-		throw -1;
+		throw runtime_error("calibration parameters empty.");
 	}
 	m_res_par = res_par;
 	res_par_ready = true;
@@ -158,10 +158,7 @@ void Spectrum::Write(const string out_f) {
 	cout<<"E spectrum written to ["<<out_f<<"] successfully."<<endl;
 	cout<<endl;
 	Show();
-	cout<<"ADC to E Model: ["<<m_res_par.at(0)<<"]+["
-		<<m_res_par.at(1)<<"]*x+["
-		<<m_res_par.at(2)<<"]*x*x"<<endl;
-	cout<<"output: on [N] line is the entries in [-0.5keV+N*keV,+0.5keV+N*keV)"<<endl;
+	cout<<"output: on [N] line there is the entries in [-0.5keV+N*keV,+0.5keV+N*keV)"<<endl;
 	cout<<"eg: first line is the entries in [0.5keV, 1.5keV)"<<endl;
 	// data
 	for(int i = 1;i<=E->GetNbins();++i)
@@ -174,7 +171,7 @@ using std::setprecision;
 void Spectrum::Show() const {
 	// ADC spc
 	if(ADC_spc_ready) {
-		cout<<"ADC: ";
+		cout<<"ADC: "<<ADC->GetNbins()<<" ";
 		int i = 0;
 		while(ADC->GetBinContent(i)==0) ++i;
 		for(int j = i;j<i+3;++j)
@@ -183,12 +180,12 @@ void Spectrum::Show() const {
 	}
 	// calib
 	if(res_par_ready) {
-		cout<<"Calib: "<<m_res_par.at(0)<<"+("
+		cout<<"Calib("<<m_res_par.size()<<"): "<<m_res_par.at(0)<<"+("
 			<<m_res_par.at(1)<<")*x+("
 			<<m_res_par.at(2)<<")*x*x"<<endl;
 	}
 	if(E_spc_ready) {
-		cout<<"E: ";
+		cout<<"E: "<<E->GetNbins()<<" ";
 		int i = 0;
 		while(E->GetBinContent(i)==0) ++i;
 		for(int j = i;j<i+3;++j)

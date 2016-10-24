@@ -15,7 +15,6 @@ int main(const int argc,const char *argv[]) {
 
 	 try {
 		  GeSpcAnalysisManager::GetInstance()->ReadOptions(argc,argv);
-		  
 	 } catch (std::exception &ex) {
 		  std::cerr<<"Exception: "<<ex.what()<<std::endl;
 		  system("PAUSE");
@@ -25,12 +24,12 @@ int main(const int argc,const char *argv[]) {
 	 try {
 		 Spectrum *spc = new Spectrum(1*Spectrum::keV);
 		 while(GeSpcAnalysisManager::GetInstance()->HasNext()) {
-			GeSpcAnalysisManager::GetInstance()->LoadRawSpectrum();
-		 spc->SetSpectrum(GeSpcAnalysisManager::GetInstance()->GetSpectrum());
-		 spc->SetCalibration(GeSpcAnalysisManager::GetInstance()->GetCalibration());
-		 // "ConvertToOutN" or "FillOutN"
-		 spc->Convert("FillOutN");
-		 spc->Write(GeSpcAnalysisManager::GetInstance()->GetOutputName());
+			 GeSpcAnalysisManager::GetInstance()->LoadRawSpectrum();
+			 spc->SetSpectrum(GeSpcAnalysisManager::GetInstance()->GetSpectrum());
+			 spc->SetCalibration(GeSpcAnalysisManager::GetInstance()->GetCalibration());
+			 // "ConvertToOutN" or "FillOutN"
+			 spc->Convert("FillOutN");
+			 spc->Write(GeSpcAnalysisManager::GetInstance()->GetOutputName());
 		 }
 	 } catch (std::exception &ex) {
 		 std::cerr<<"Exception: "<<ex.what()<<std::endl;

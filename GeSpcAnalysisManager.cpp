@@ -58,7 +58,7 @@ bool GeSpcAnalysisManager::ReadOptions(const int argc, const char *argv[]) {
 
 bool GeSpcAnalysisManager::LoadRawSpectrum() {
 	if(m_current_file==m_input_f_v.size()) 
-		throw runtime_error("Cannot load this file.");
+		throw runtime_error("All spectrums are loaded.");
 	return ParseRawDataFile(m_input_f_v.at(++m_current_file),m_raw_spc,m_res_par);
 }
 
@@ -85,6 +85,8 @@ bool GeSpcAnalysisManager::FindFlag(istream &in,const string &flag) {
 
 bool GeSpcAnalysisManager::ParseRawDataFile(string raw_fname, vector<unsigned int> &raw_spc,vector<double> &res_par) {
 	// currently put this method in the GeSpcAnalysisManager
+	raw_spc.clear();
+	res_par.clear();
 	ifstream rawspc_f;
 	rawspc_f.open(raw_fname.c_str());
 	if(!rawspc_f.is_open()) {
@@ -125,46 +127,37 @@ bool GeSpcAnalysisManager::ParseRawDataFile(string raw_fname, vector<unsigned in
 	 * 3
 	 * 1.158641E+001 -2.875630E-003 0.000000E+000
 	 ****************************************************************************/
-	{
-		// get entry of in_N
-		int in_N_begin,in_N_end; {
-			// skip the head description part
-			FindFlag(rawspc_f,"$DATA:");
-			rawspc_f>>in_N_begin>>in_N_end;
-		}
-		// get the entries for each channel
-		for(int i = in_N_begin;i< in_N_end; ++i) {
-			unsigned int n;
-			rawspc_f>>n;
-			raw_spc.push_back(n);
-		}
-		if(rawspc_f.fail()) {
-			stringstream fatal;
-			fatal<<"In correct format in ["<<raw_fname<<"]"<<endl;
-			throw runtime_error(fatal.str());
-		}
+	// get entry of in_N
+	int in_N_begin,in_N_end; {
+		// skip the head description part
+		FindFlag(rawspc_f,"$DATA:");
+		rawspc_f>>in_N_begin>>in_N_end;
 	}
-	{
-		// find [$MCA_CAL:] flag
-		FindFlag(rawspc_f,"$MCA_CAL:");
-		int npar;
-		rawspc_f>>npar;
-		for(int i = 0;i<npar;++i) {
-			double par;
-			rawspc_f>>par;
-			res_par.push_back(par);
-		}
-		if(rawspc_f.fail()) {
-			stringstream fatal;
-			fatal<<"In correct format in ["<<raw_fname<<"]"<<endl;
-			throw runtime_error(fatal.str());
-		}
-		rawspc_f.close();
-		return true;
+	// get the entries for each channel
+	for(int i = in_N_begin;i<= in_N_end; ++i) {
+		unsigned int n;
+		rawspc_f>>n;
+		raw_spc.push_back(n);
 	}
+	if(rawspc_f.fail()) {
+		stringstream fatal;
+		fatal<<"In correct format in ["<<raw_fname<<"]"<<endl;
+		throw runtime_error(fatal.str());
+	}
+	// find [$MCA_CAL:] flag
+	FindFlag(rawspc_f,"$MCA_CAL:");
+	int npar;
+	rawspc_f>>npar;
+	for(int i = 0;i<npar;++i) {
+		double par;
+		rawspc_f>>par;
+		res_par.push_back(par);
+	}
+	if(rawspc_f.fail()) {
+		stringstream fatal;
+		fatal<<"In correct format in ["<<raw_fname<<"]"<<endl;
+		throw runtime_error(fatal.str());
+	}
+	rawspc_f.close();
+	return true;
 }
-//string GeSpcAnalysisManager::GetOutputROOTName() {
-//	stringstream outputRootName;
-//	outputRootName<<m_output_f<<".root";
-//	return outputRootName.str();
-//}

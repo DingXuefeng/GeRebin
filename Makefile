@@ -4,16 +4,16 @@ LIBS:=-g
 GeRebin: GeSpcAnalysisManager.o GeRebin.o Spectrum.o TRandom.o
 	g++ -o $@ $(LIBS) $^
 
-TRandom.o: TRandom.cxx TRandom.h
+TRandom.o: TRandom.cpp TRandom.h
 	g++ -c $(CFLAGS) $<
 
-GeSpcAnalysisManager.o: GeSpcAnalysisManager.cc GeSpcAnalysisManager.hh
+GeSpcAnalysisManager.o: GeSpcAnalysisManager.cpp GeSpcAnalysisManager.h
 	g++ -c $(CFLAGS) $<
 #
-Spectrum.o: Spectrum.cc Spectrum.h TRandom.h
+Spectrum.o: Spectrum.cpp Spectrum.h TRandom.h
 	g++ -c $(CFLAGS) $< 
 #
-GeRebin.o: GeRebin.cc GeSpcAnalysisManager.hh
+GeRebin.o: GeRebin.cpp GeSpcAnalysisManager.h
 	g++ -c $(CFLAGS) $<
 
 clean:
