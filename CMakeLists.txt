@@ -10,7 +10,9 @@ endif()
 add_executable(GeRebin GeRebin.cpp)
 target_link_libraries(GeRebin Rebin)
 target_compile_features(GeRebin PRIVATE cxx_range_for)
-add_library(Rebin SHARED Spectrum.cpp 
+add_library(Rebin SHARED 
+  Spectrum.cpp 
+  Histogram.cpp
   FileLoader.cpp 
   GeMPILoader.cpp
   GeSpcAnalysisManager.cpp
