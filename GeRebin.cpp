@@ -1,3 +1,8 @@
+/***************************************************************************
+ * Author: Xuefeng Ding<xuefeng.ding.physics@gmail.com>
+ * Date: 2017.07.22
+ * Copyrighted, all rights reserved
+ * ***********************************************************************/
 // GeRebin.cpp : Defines the entry point for the console application.
 //
 
@@ -27,15 +32,15 @@ int main(const int argc,const char *argv[]) {
 	 }
 
 	 try {
-		 Spectrum *spc = new Spectrum(1*Spectrum::keV);
-		 while(GeSpcAnalysisManager::GetInstance()->HasNext()) {
-			 GeSpcAnalysisManager::GetInstance()->LoadRawSpectrum();
-			 spc->SetSpectrum(GeSpcAnalysisManager::GetInstance()->GetSpectrum());
-			 spc->SetCalibration(GeSpcAnalysisManager::GetInstance()->GetCalibration());
-			 // "ConvertToOutN" or "FillOutN"
-			 spc->Convert("FillOutN");
-			 spc->Write(GeSpcAnalysisManager::GetInstance()->GetOutputName());
-		 }
+//		 Spectrum *spc = new Spectrum(1*Spectrum::keV);
+//		 while(GeSpcAnalysisManager::GetInstance()->HasNext()) {
+//			 GeSpcAnalysisManager::GetInstance()->LoadRawSpectrum();
+//			 spc->SetSpectrum(GeSpcAnalysisManager::GetInstance()->GetSpectrum());
+//			 spc->SetCalibration(GeSpcAnalysisManager::GetInstance()->GetCalibration());
+//			 // "ConvertToOutN" or "FillOutN"
+//			 spc->Convert("FillOutN");
+//			 spc->Write(GeSpcAnalysisManager::GetInstance()->GetOutputName());
+//		 }
 	 } catch (std::exception &ex) {
 		 std::cerr<<"Exception: "<<ex.what()<<std::endl;
 		 __PAUSE__;
