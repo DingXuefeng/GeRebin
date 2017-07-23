@@ -15,6 +15,7 @@
 #include <stdexcept>
 #include <iostream>
 #include "GeSpcAnalysisManager.h"
+#include "GeMPILoader.h"
 using GeSpcAnalysis::GeSpcAnalysisManager;
 #ifdef _WIN32
 #define __PAUSE__ system("PAUSE");
@@ -23,31 +24,29 @@ using GeSpcAnalysis::GeSpcAnalysisManager;
 #endif
 int main(const int argc,const char *argv[]) {
 
-	 try {
-		  GeSpcAnalysisManager::GetInstance()->ReadOptions(argc,argv);
-	 } catch (std::exception &ex) {
-		  std::cerr<<"Exception: "<<ex.what()<<std::endl;
-		  __PAUSE__;
-		  exit(1);
-	 }
+  try {
+    GeSpcAnalysisManager::GetInstance()->ReadOptions(argc,argv);
+    GeSpcAnalysisManager::GetInstance()->SetLoader(new GeMPILoader);
+  } catch (std::exception &ex) {
+    std::cerr<<"Exception: "<<ex.what()<<std::endl;
+    __PAUSE__;
+    exit(1);
+  }
 
-	 try {
-//		 Spectrum *spc = new Spectrum(1*Spectrum::keV);
-//		 while(GeSpcAnalysisManager::GetInstance()->HasNext()) {
-//			 GeSpcAnalysisManager::GetInstance()->LoadRawSpectrum();
-//			 spc->SetSpectrum(GeSpcAnalysisManager::GetInstance()->GetSpectrum());
-//			 spc->SetCalibration(GeSpcAnalysisManager::GetInstance()->GetCalibration());
-//			 // "ConvertToOutN" or "FillOutN"
-//			 spc->Convert("FillOutN");
-//			 spc->Write(GeSpcAnalysisManager::GetInstance()->GetOutputName());
-//		 }
-	 } catch (std::exception &ex) {
-		 std::cerr<<"Exception: "<<ex.what()<<std::endl;
-		 __PAUSE__;
-		 exit(1);
-	 }
-	 __PAUSE__;
 
-	 return 0;
+  GeSpcAnalysisManager::GetInstance()->Dump();
+
+  try {
+    while(GeSpcAnalysisManager::GetInstance()->Next()) {
+      GeSpcAnalysisManager::GetInstance()->ProcessCurrentTask();
+    }
+  } catch (std::exception &ex) {
+    std::cerr<<"Exception: "<<ex.what()<<std::endl;
+    __PAUSE__;
+    exit(1);
+  }
+  __PAUSE__;
+
+  return 0;
 }
 

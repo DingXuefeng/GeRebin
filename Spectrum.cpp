@@ -1,3 +1,8 @@
+/***************************************************************************
+ * Author: Xuefeng Ding<xuefeng.ding.physics@gmail.com>
+ * Date: 2017.07.22
+ * Copyrighted, all rights reserved
+ * ***********************************************************************/
 #include "stdafx.h"
 
 #include "Spectrum.h"
@@ -194,3 +199,9 @@ void Spectrum::Show() const {
 	}
 }
 
+#include "FileLoader.h"
+void Spectrum::LoadRawSpectrum(const std::string &inputname) {
+  loader->ParseRawDataFile(inputname);
+  SetSpectrum(loader->get_raw());
+  SetCalibration(loader->get_res_par());
+}

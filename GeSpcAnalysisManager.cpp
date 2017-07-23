@@ -6,6 +6,8 @@
 #include "stdafx.h"
 
 #include "GeSpcAnalysisManager.h"
+#include "FileLoader.h"
+#include "Spectrum.h"
 
 #include <iostream>
 using GeSpcAnalysis::GeSpcAnalysisManager;
@@ -14,7 +16,9 @@ using std::endl;
 
 GeSpcAnalysisManager *GeSpcAnalysisManager::fGeSpcAnalysisManager = 0L;
 
-GeSpcAnalysisManager::GeSpcAnalysisManager() : m_current_file(-1) { }
+GeSpcAnalysisManager::GeSpcAnalysisManager() : 
+  m_current_task(-1) , inputname(), outputname(), config ( 1.,0.5,3000.5 )
+{ }
 
 GeSpcAnalysisManager *GeSpcAnalysisManager::GetInstance() {
   if(!fGeSpcAnalysisManager) fGeSpcAnalysisManager = new GeSpcAnalysisManager;
@@ -28,28 +32,29 @@ using std::ifstream;
 using std::getline;
 void GeSpcAnalysisManager::ShowHelp() const {
   cout<<"Program for rebinning of Germanium detector spectrum"<<endl;
-  cout<<"Usage 1: ./process -s <input file> [config] [outputfile]"<<endl;
-  cout<<"If the config file not specified, the output histogram will be from 0.5 keV to 3000.5 keV, and 1 keV per bin."<<endl;
-  cout<<"If the config file is specified, it should contain three numbers: E_bin, E_start and E_end."<<endl;
-  cout<<"If the output file not specified, it will be <inputfilename>_rebin_[E_bin]_[E_start]_[E_end].dat"<<endl;
+  cout<<"Usage 1: ./process -s <input file> [outputfile] [configfile]"<<endl;
+  cout<<"If the output file not specified, it will be <inputfilename>_rebin_[E_bin]_[E_start]_[E_end].dat."<<endl;
+  cout<<"If the config file is specified, it should contain three numbers: E_bin, E_start and E_end;"<<endl;
+  cout<<"     Otherwise, the output histogram will be from 0.5 keV to 3000.5 keV, and 1 keV per bin."<<endl;
   cout<<"Usage 2: ./process -m <file> [configfile]"<<endl;
-  cout<<"             each line of the file should contain <input file> [outputfile]"<<endl;
+  cout<<"             each line of the file should contain <input file> [output file]"<<endl;
   cout<<"Usage 3: ./process -h"<<endl;
   std::abort();
 }
 bool GeSpcAnalysisManager::ReadOptions(const int argc, const char *argv[]) {
-  if(std::string(argv[1])=="-s") {
+  if(argc>1 && std::string(argv[1])=="-s") {
     if(argc<3) ShowHelp();
     inputname.push_back(argv[2]);
-    if(argc>3) LoadConfig(argv[3]);
-    if(argc>4) outputname.push_back(argv[3]);
-  } else if(std::string(argv[1])=="-m") {
+    if(argc>3) outputname.push_back(argv[3]); else outputname.push_back("");
+    if(argc>4) LoadConfig(argv[4]);
+  } else if(argc>1 && std::string(argv[1])=="-m") {
     if(argc<3) ShowHelp();
     LoadTasks(argv[2]);
     if(argc>3) LoadConfig(argv[3]);
-  } else if(std::string(argv[1])=="-h") {
+  } else {
     ShowHelp();
   }
+  spc = new Spectrum(config.E_bin);
   return true;
 }
 
@@ -64,10 +69,39 @@ void GeSpcAnalysisManager::LoadConfig(const std::string &configname) {
   }
   config_f.close();
 }
-bool GeSpcAnalysisManager::LoadRawSpectrum() {
-  return true;
-//	if(m_current_file==m_input_f_v.size()) 
-//		throw runtime_error("All spectrums are loaded.");
-//	return ParseRawDataFile(m_input_f_v.at(++m_current_file),m_raw_spc,m_res_par);
+void GeSpcAnalysisManager::LoadTasks(const std::string &tasklists) {
+  std::ifstream task_f;
+  task_f.open(tasklists);
+  if(!task_f) {
+    std::cerr<<"Cannot open task lists ["<<tasklists<<"]"<<std::endl;
+    throw std::runtime_error("Cannot open tasklists");
+  }
+  while(true) {
+    std::string tmp;
+    getline(task_f,tmp);
+    if(task_f.fail()) break;
+    std::vector<std::string> keys;
+    FileLoader::Split(tmp,keys);
+    if(keys.size()!=1 && keys.size()!=2) { std::cerr<<"Wrong format in task list. Put <input file> [output file] please"<<std::endl; throw std::runtime_error("Wrong format"); }
+    inputname.push_back(keys[0]);
+    if(keys.size()==2) outputname.push_back(keys[1]); else outputname.push_back("");
+  }
+}
+void GeSpcAnalysisManager::Dump() const {
+  std::cout<<"GeSpcAnalysisManager"<<std::endl;
+  std::cout<<"Config (keV): bin ["<<config.E_bin<<"] start ["<<config.E_start<<"] end ["<<config.E_end<<"]"<<std::endl;
+  std::cout<<"Tasks:"<<std::endl;
+  for(int i = 0;i<inputname.size();++i) {
+    std::cout<<"["<<inputname[i]<<"] => ["<<outputname[i]<<"]"<<std::endl;
+  }
 }
 
+void GeSpcAnalysisManager::ProcessCurrentTask() {
+  std::cout<<"processing ["<<inputname[m_current_task]<<"] => ["<<outputname[m_current_task]<<"]"<<std::endl;
+  spc->Reset();
+  spc->SetLoader(loader);
+  spc->LoadRawSpectrum(inputname[m_current_task]);
+  // "ConvertToOutN" or "FillOutN"
+  spc->Convert("FillOutN");
+  spc->Write(outputname[m_current_task]);
+}

@@ -1,4 +1,10 @@
+/***************************************************************************
+ * Author: Xuefeng Ding<xuefeng.ding.physics@gmail.com>
+ * Date: 2017.07.22
+ * Copyrighted, all rights reserved
+ * ***********************************************************************/
 #ifndef Spectrum_H
+#define Spectrum_H
 #include <vector>
 using std::vector;
 #include <string>
@@ -7,6 +13,7 @@ using std::string;
 using std::exception;
 using std::runtime_error;
 #include "TRandom.h"
+class FileLoader;
 class Spectrum {
 	public:
 		Spectrum(double out_bin_width);
@@ -16,12 +23,16 @@ class Spectrum {
 		void Convert(string conversion_method);
 		void Write(const string out_f);
 		void Show() const;
+        void SetLoader(FileLoader *loader_) { loader = loader_; }
+        void Reset() {}
+        void LoadRawSpectrum(const std::string &inputname);
 	private:
 		void ConvertToOutN();
 		void FillOutN();
 		double ADC_to_E(double ADC);
 
 	private:
+        FileLoader *loader = nullptr;
 		bool res_par_ready;
 		bool ADC_spc_ready;
 		bool E_spc_ready;
@@ -64,4 +75,3 @@ class Spectrum {
 		Histogram *E;
 };
 #endif
-#define Spectrum_H
