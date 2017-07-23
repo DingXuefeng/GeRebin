@@ -11,8 +11,6 @@
 
 #include <iostream>
 using GeSpcAnalysis::GeSpcAnalysisManager;
-using std::cout;
-using std::endl;
 
 GeSpcAnalysisManager *GeSpcAnalysisManager::fGeSpcAnalysisManager = 0L;
 
@@ -31,14 +29,14 @@ using std::runtime_error;
 using std::ifstream;
 using std::getline;
 void GeSpcAnalysisManager::ShowHelp() const {
-  cout<<"Program for rebinning of Germanium detector spectrum"<<endl;
-  cout<<"Usage 1: ./process -s <input file> [outputfile] [configfile]"<<endl;
-  cout<<"If the output file not specified, it will be <inputfilename>_rebin_[E_bin]_[E_start]_[E_end].dat."<<endl;
-  cout<<"If the config file is specified, it should contain three numbers: E_bin, E_start and E_end;"<<endl;
-  cout<<"     Otherwise, the output histogram will be from 0.5 keV to 3000.5 keV, and 1 keV per bin."<<endl;
-  cout<<"Usage 2: ./process -m <file> [configfile]"<<endl;
-  cout<<"             each line of the file should contain <input file> [output file]"<<endl;
-  cout<<"Usage 3: ./process -h"<<endl;
+  std::cout<<"Program for rebinning of Germanium detector spectrum"<<std::endl;
+  std::cout<<"Usage 1: ./process -s <input file> [outputfile] [configfile]"<<std::endl;
+  std::cout<<"If the output file not specified, it will be <inputfilename>_rebin_[E_bin]_[E_start]_[E_end].dat."<<std::endl;
+  std::cout<<"If the config file is specified, it should contain three numbers: E_bin, E_start and E_end;"<<std::endl;
+  std::cout<<"     Otherwise, the output histogram will be from 0.5 keV to 3000.5 keV, and 1 keV per bin."<<std::endl;
+  std::cout<<"Usage 2: ./process -m <file> [configfile]"<<std::endl;
+  std::cout<<"             each line of the file should contain <input file> [output file]"<<std::endl;
+  std::cout<<"Usage 3: ./process -h"<<std::endl;
   std::abort();
 }
 bool GeSpcAnalysisManager::ReadOptions(const int argc, const char *argv[]) {
